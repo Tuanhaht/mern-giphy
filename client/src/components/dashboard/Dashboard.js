@@ -3,22 +3,57 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
+import GiphyService from "../../services/giphy";
 
-import { Layout, Menu, Dropdown, Button, Avatar } from 'antd';
-import {
-  LogoutOutlined,
-} from '@ant-design/icons';
+import { Layout, Menu, Dropdown, Button, Avatar, Spin, Row, Col, Card } from 'antd';
+import { EditOutlined, EllipsisOutlined, SettingOutlined, LogoutOutlined } from '@ant-design/icons';
+const { Meta } = Card;
 
 const { Header, Content, Footer } = Layout;
+const topColResponsiveProps = {
+  xs: 24,
+  sm: 12,
+  md: 12,
+  lg: 12,
+  xl: 6,
+  style: {
+    marginBottom: 24,
+  },
+};
 
 class Dashboard extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      giphys: [],
+      loading: true
+    }
+  }
+
+  componentDidMount = () => {
+    this.getGiphys();
+  }
+
+  getGiphys = async () => {
+    try {
+      const response = await GiphyService.getGiphys();
+      this.setState({
+        giphys: response.data,
+        loading: false
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   onLogoutClick = () => {
     this.props.logoutUser();
   };
 
   render() {
     const { user } = this.props.auth;
-
+    const { giphys, loading } = this.state;
     return (
       <Layout className="layout">
         <Header className="site-layout-background" style={{ "background": "white" }}>
@@ -42,7 +77,37 @@ class Dashboard extends Component {
           </Dropdown>
         </Header>
         <Content style={{ padding: '50px 50px 0' }}>
-          <div className="site-layout-content">Content</div>
+          <div className="site-statistic-demo-card" style={{ background: "white", padding: "20px" }}>
+            <Spin spinning={loading}>
+              <Row gutter={24} type="flex">
+                {giphys.map(giphy => (
+                  <Col {...topColResponsiveProps} key={giphy.id}>
+                    <Card
+                      cover={
+                        <img
+                          style={{ height: "300px", objectFit: "cover" }}
+                          alt="example"
+                          src={giphy.images.original.webp || "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
+                        />
+                      }
+                      actions={[
+                        <SettingOutlined key="setting" />,
+                        <EditOutlined key="edit" />,
+                        <EllipsisOutlined key="ellipsis" />,
+                      ]}
+                    >
+                      <Meta
+                        style={{ height: "130px" }}
+                        avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                        title={giphy.type || "Card Title"}
+                        description={giphy.title || "This is the description"}
+                      />
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
+            </Spin>
+          </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>MERN-GIPHY Created by Trần Văn Tuấn</Footer>
       </Layout>

@@ -1,11 +1,18 @@
 import React, { Component } from "react";
+
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
 
+import { Layout, Menu, Dropdown, Button, Avatar } from 'antd';
+import {
+  LogoutOutlined,
+} from '@ant-design/icons';
+
+const { Header, Content, Footer } = Layout;
+
 class Dashboard extends Component {
-  onLogoutClick = e => {
-    e.preventDefault();
+  onLogoutClick = () => {
     this.props.logoutUser();
   };
 
@@ -13,31 +20,32 @@ class Dashboard extends Component {
     const { user } = this.props.auth;
 
     return (
-      <div style={{ height: "75vh" }} className="container valign-wrapper">
-        <div className="row">
-          <div className="landing-copy col s12 center-align">
-            <h4>
-              <b>Hey there,</b> {user.name.split(" ")[0]}
-              <p className="flow-text grey-text text-darken-1">
-                You are logged into a full-stack{" "}
-                <span style={{ fontFamily: "monospace" }}>MERN</span> app 👏
-              </p>
-            </h4>
-            <button
+      <Layout className="layout">
+        <Header className="site-layout-background" style={{ "background": "white" }}>
+          <Dropdown overlay={<Menu>
+            <Menu.Item className="d-flex align-items-center" onClick={this.onLogoutClick}>
+              <LogoutOutlined /><span>Đăng xuất</span>
+            </Menu.Item>
+          </Menu>} placement="bottomCenter">
+            <Button
               style={{
-                width: "150px",
-                borderRadius: "3px",
-                letterSpacing: "1.5px",
-                marginTop: "1rem"
+                border: 'none',
+                height: 64,
+                position: "relative",
+                float: "right"
               }}
-              onClick={this.onLogoutClick}
-              className="btn btn-large waves-effect waves-light hoverable blue accent-3"
+              className="mx-3 d-flex align-items-center"
             >
-              Logout
-            </button>
-          </div>
-        </div>
-      </div>
+              <Avatar src={"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"} />
+              <span className="ml-1 text-uppercase ml-2" style={{ textTransform: "uppercase", marginLeft: "10px" }}>Hello, {user.name.split(" ")[0]}</span>
+            </Button>
+          </Dropdown>
+        </Header>
+        <Content style={{ padding: '50px 50px 0' }}>
+          <div className="site-layout-content">Content</div>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>MERN-GIPHY Created by Trần Văn Tuấn</Footer>
+      </Layout>
     );
   }
 }

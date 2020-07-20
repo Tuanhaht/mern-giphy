@@ -1,4 +1,4 @@
-# mern-giphy
+# MERN_GIPHY
 
 ## Quick Start
 

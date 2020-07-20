@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
+const auth = require("../auth");
 const passport = require("passport");
 
 // Load input validation
@@ -104,6 +105,24 @@ router.post("/login", (req, res) => {
       }
     });
   });
+});
+
+router.put('/user', auth.required, function (req, res, next) {
+  User.findById(req.payload.id).then(function (user) {
+    if (!user) { return res.sendStatus(401); }
+    let favorites = user.favorites || [];
+    if (favorites.includes(req.body.favorite)) {
+      return res.json({ success: false, message: "Đã tồn tại trong danh sách yêu thích của bạn" });
+    }
+    // only update fields that were actually passed...
+    if (typeof req.body.favorite !== 'undefined') {
+      favorites = [...favorites, req.body.favorite];
+      user.favorites = favorites;
+    }
+    return user.save().then(function () {
+      return res.json({ success: true, user });
+    });
+  }).catch(next);
 });
 
 module.exports = router;

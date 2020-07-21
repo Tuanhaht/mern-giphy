@@ -107,6 +107,13 @@ router.post("/login", (req, res) => {
   });
 });
 
+router.get('/user', auth.required, function (req, res, next) {
+  User.findById(req.payload.id).then(function (user) {
+    if (!user) { return res.sendStatus(401); }
+    return res.json({ success: true, user });
+  }).catch(next);
+});
+
 router.put('/user', auth.required, function (req, res, next) {
   User.findById(req.payload.id).then(function (user) {
     if (!user) { return res.sendStatus(401); }

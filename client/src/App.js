@@ -12,6 +12,7 @@ import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
+import FavoriteGiphy from "./components/Favotites";
 import 'antd/dist/antd.css';
 import "./App.css";
 
@@ -45,6 +46,7 @@ class App extends Component {
             <Route exact path="/login" component={Login} />
             <Switch>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              <PrivateRoute exact path="/favorite" component={FavoriteGiphy} />
             </Switch>
           </div>
         </Router>

@@ -2,11 +2,12 @@ import React, { Component } from "react";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { logoutUser } from "../../actions/authActions";
 import GiphyService from "../../services/giphy";
 
-import { Layout, Menu, Dropdown, Button, Avatar, Spin, Row, Col, Card } from 'antd';
-import { EditOutlined, EllipsisOutlined, SettingOutlined, LogoutOutlined } from '@ant-design/icons';
+import { Layout, Menu, Dropdown, Button, Avatar, Spin, Row, Col, Card, message } from 'antd';
+import { PlusOutlined, LogoutOutlined } from '@ant-design/icons';
 const { Meta } = Card;
 
 const { Header, Content, Footer } = Layout;
@@ -21,7 +22,7 @@ const topColResponsiveProps = {
   },
 };
 
-class Dashboard extends Component {
+class FavoriteGiphy extends Component {
 
   constructor(props) {
     super(props);
@@ -47,6 +48,25 @@ class Dashboard extends Component {
     }
   }
 
+  addGif = async (id) => {
+    try {
+      const data = { favorite: id };
+      this.setState({ loading: true });
+      const response = await GiphyService.addGif(data);
+      this.setState({
+        loading: false
+      })
+      if (response.success) {
+        message.success('Thành công');
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      console.log(error);
+      message.error('Có lỗi xảy ra');
+    }
+  }
+
   onLogoutClick = () => {
     this.props.logoutUser();
   };
@@ -58,6 +78,12 @@ class Dashboard extends Component {
       <Layout className="layout">
         <Header className="site-layout-background" style={{ "background": "white" }}>
           <Dropdown overlay={<Menu>
+            <Menu.Item className="d-flex align-items-center">
+              <Link to="/dashboard"><span>Trang chủ</span></Link>
+            </Menu.Item>
+            <Menu.Item className="d-flex align-items-center">
+              <Link to="/favorite"><span>Danh sách yêu thích</span></Link>
+            </Menu.Item>
             <Menu.Item className="d-flex align-items-center" onClick={this.onLogoutClick}>
               <LogoutOutlined /><span>Đăng xuất</span>
             </Menu.Item>
@@ -91,9 +117,7 @@ class Dashboard extends Component {
                         />
                       }
                       actions={[
-                        <SettingOutlined key="setting" />,
-                        <EditOutlined key="edit" />,
-                        <EllipsisOutlined key="ellipsis" />,
+                        <PlusOutlined key="plus" onClick={() => this.addGif(giphy.id)} />,
                       ]}
                     >
                       <Meta
@@ -115,7 +139,7 @@ class Dashboard extends Component {
   }
 }
 
-Dashboard.propTypes = {
+FavoriteGiphy.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
@@ -127,4 +151,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { logoutUser }
-)(Dashboard);
+)(FavoriteGiphy);

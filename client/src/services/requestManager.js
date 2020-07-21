@@ -13,7 +13,7 @@ export default class ManagerRequest {
 	async startRequest(method, url, body) {
 		try {
 			axios.defaults.headers.common['Content-Type'] = "application/json";
-			axios.defaults.headers.common['Access-Control-Allow-Origin'] = "*";
+			axios.defaults.headers.common['Authorization'] = localStorage.getItem("jwtToken");
 			const response = await axios({
 				method: method,
 				url: url,

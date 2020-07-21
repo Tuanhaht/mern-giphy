@@ -9,4 +9,28 @@ export default class StatisticsService {
 		)
 		return response;
 	}
+
+	static async getFavoriteGiphy(favorites) {
+		const response = await requestManager.getInstance().startRequest(config.METHOD.GET,
+			`${config.domain}/v1/gifs?api_key=${config.giphy_api_key}&ids=${favorites}`,
+			{}
+		)
+		return response;
+	}
+
+	static async addGif(data) {
+		const response = await requestManager.getInstance().startRequest(config.METHOD.PUT,
+			`/api/users/user`,
+			data
+		)
+		return response;
+	}
+
+	static async getInforUser() {
+		const response = await requestManager.getInstance().startRequest(config.METHOD.GET,
+			`/api/users/user`,
+			{}
+		)
+		return response;
+	}
 }

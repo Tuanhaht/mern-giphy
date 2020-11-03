@@ -12,6 +12,7 @@ class Register extends Component {
     super();
     this.state = {
       name: "",
+      username: "",
       email: "",
       password: "",
       password2: "",
@@ -43,12 +44,26 @@ class Register extends Component {
 
     const newUser = {
       name: this.state.name,
+      username: this.state.username,
       email: this.state.email,
       password: this.state.password,
       password2: this.state.password2
     };
 
-    this.props.registerUser(newUser, this.props.history);
+    const newUserRocketChat = {
+      name: this.state.name,
+      username: this.state.username,
+      email: this.state.email,
+      password: this.state.password
+    };
+
+    try {
+      this.props.registerUser(newUser, newUserRocketChat, this.props.history);
+    } catch (error) {
+      console.log(error);
+    }
+
+
   };
 
   render() {
@@ -86,6 +101,20 @@ class Register extends Component {
                   />
                   <label htmlFor="name">Name</label>
                   <span className="red-text">{errors.name}</span>
+                </div>
+                <div className="input-field col s12">
+                  <input
+                    onChange={this.onChange}
+                    value={this.state.username}
+                    error={errors.username}
+                    id="username"
+                    type="text"
+                    className={classnames("", {
+                      invalid: errors.username
+                    })}
+                  />
+                  <label htmlFor="username">Username</label>
+                  <span className="red-text">{errors.username}</span>
                 </div>
                 <div className="input-field col s12">
                   <input

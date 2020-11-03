@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../../actions/authActions";
 import GiphyService from "../../services/giphy";
+import config from "../../config/index";
 
 import { Layout, Menu, Dropdown, Button, Avatar, Spin, Row, Col, Card, message } from 'antd';
 import { PlusOutlined, LogoutOutlined } from '@ant-design/icons';
@@ -83,6 +84,9 @@ class FavoriteGiphy extends Component {
             </Menu.Item>
             <Menu.Item className="d-flex align-items-center">
               <Link to="/favorite"><span>Danh sách yêu thích</span></Link>
+            </Menu.Item>
+            <Menu.Item className="d-flex align-items-center" onClick={() => { window.open(`${config.domainRocketChat}`, '_blank') }}>
+              <span>Chat</span>
             </Menu.Item>
             <Menu.Item className="d-flex align-items-center" onClick={this.onLogoutClick}>
               <LogoutOutlined /><span>Đăng xuất</span>

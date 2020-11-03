@@ -2,12 +2,15 @@ import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 
+import config from "../config/index"
+
 import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from "./types";
 
 // Register User
-export const registerUser = (userData, history) => dispatch => {
+export const registerUser = (userData, newUserRocketChat, history) => dispatch => {
   axios
     .post("/api/users/register", userData)
+    .then(registerAccRocketChat(newUserRocketChat))
     .then(res => history.push("/login"))
     .catch(err =>
       dispatch({
@@ -15,6 +18,19 @@ export const registerUser = (userData, history) => dispatch => {
         payload: err.response.data
       })
     );
+};
+
+// Register User
+export const registerAccRocketChat = (userData) => (dispatch) => {
+  axios({
+    method: 'POST',
+    url: `${config.domainRocketChat}/api/v1/users.create`,
+    data: userData,
+    headers: {
+      'X-Auth-Token': `hH0P-d5tD2NBvf4BPacDy6aAIcFwkugtrwppQm4pOU3`,
+      'X-User-Id': `LiJ4sKSWPqMXxCX27`
+    }
+  })
 };
 
 // Login - get user token

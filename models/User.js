@@ -7,6 +7,12 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  twitter: {
+    type: String,
+  },
+  role: {
+    type: String,
+  },
   email: {
     type: String,
     required: true

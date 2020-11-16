@@ -14,7 +14,7 @@ const validateLoginInput = require("../../validation/login");
 const User = require("../../models/User");
 
 // @route POST api/users/register
-// @desc Register user
+// @desc Register users
 // @access Public
 router.post("/register", (req, res) => {
   // Form validation
@@ -32,6 +32,8 @@ router.post("/register", (req, res) => {
     } else {
       const newUser = new User({
         name: req.body.name,
+        role: req.body.role,
+        twitter: req.body.twitter,
         email: req.body.email,
         password: req.body.password,
         username: req.body.username
@@ -83,6 +85,8 @@ router.post("/login", (req, res) => {
         const payload = {
           id: user.id,
           name: user.name,
+          role: user.role,
+          twitter: user.twitter,
           username: user.username,
           email: user.email
         };

@@ -7,10 +7,10 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  class: {
+  nameClass: {
     type: String,
   },
-  room: {
+  roomName: {
     type: String,
   },
   email: {

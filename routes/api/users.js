@@ -32,8 +32,8 @@ router.post("/register", (req, res) => {
     } else {
       const newUser = new User({
         name: req.body.name,
-        room: req.body.room,
-        class: req.body.class,
+        roomName: req.body.roomName,
+        nameClass: req.body.nameClass,
         email: req.body.email,
         password: req.body.password,
         username: req.body.username
@@ -85,8 +85,8 @@ router.post("/login", (req, res) => {
         const payload = {
           id: user.id,
           name: user.name,
-          room: user.room,
-          class: user.class,
+          roomName: user.roomName,
+          nameClass: user.nameClass,
           username: user.username,
           email: user.email
         };

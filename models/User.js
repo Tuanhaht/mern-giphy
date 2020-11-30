@@ -7,10 +7,10 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  twitter: {
+  class: {
     type: String,
   },
-  role: {
+  room: {
     type: String,
   },
   email: {
